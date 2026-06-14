@@ -1,0 +1,13 @@
+program
+main
+stack_run
+queue_run
+list_run
+
+*.o
+*.a
+*.s
+
+.vscode/
+.idea/
+*.swp
