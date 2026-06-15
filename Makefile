@@ -20,7 +20,7 @@ dynamic: student.c student.h main.c
 
 # Линковка времени выполнения через dlopen
 runtime: student.c student.h main_dynamic.c dynamic
-	$(CC) $(CFLAGS) main_dynamic.c -ldl -o $(TARGET_RUNTIME)
+	$(CC) $(CFLAGS) -rdynamic main_dynamic.c -ldl -o $(TARGET_RUNTIME)
 
 clean:
 	rm -f *.o *.a *.so $(TARGET_STATIC) $(TARGET_SHARED) $(TARGET_RUNTIME)

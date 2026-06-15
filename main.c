@@ -22,7 +22,7 @@ int main(void) {
 
     typedef void (*MenuFunction)();
 
-    MenuFunction menu[] = { NULL, add, view, search, update, deleted, sortById, undo, redo, procDelQueue, srchBackup };
+    MenuFunction menu[] = { NULL, add, view, search, update, deleted, sortById, undo, redo, processDeletionQueue, searchBackups };
 
 
 

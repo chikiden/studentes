@@ -29,23 +29,33 @@ int main(void) {
     void (*undo_fn)(void) = dlsym(handle, "undo");
     void (*redo_fn)(void) = dlsym(handle, "redo");
     void (*processDeletionQueue_fn)(void) = dlsym(handle, "processDeletionQueue");
+    
+    // Динамически загружаем функцию поиска бэкапов
+    void (*searchBackups_fn)(void) = dlsym(handle, "searchBackups"); 
 
-    initStack_fn(&undoStack);
-    initStack_fn(&redoStack);
-    initQueue_fn(&pendingDeletions);
+    // Получаем указатели на глобальные переменные
+    Stack* undoStack_ptr = (Stack*)dlsym(handle, "undoStack");
+    Stack* redoStack_ptr = (Stack*)dlsym(handle, "redoStack");
+    Queue* pendingDeletions_ptr = (Queue*)dlsym(handle, "pendingDeletions");
 
-    load_fn();
+    // Инициализируем через полученные указатели (проверяем, что dlsym нашел)
+    if (initStack_fn && undoStack_ptr) initStack_fn(undoStack_ptr);
+    if (initStack_fn && redoStack_ptr) initStack_fn(redoStack_ptr);
+    if (initQueue_fn && pendingDeletions_ptr) initQueue_fn(pendingDeletions_ptr);
+
+    if (load_fn) load_fn();
 
     typedef void (*MenuFunction)();
-    MenuFunction menu[] = { NULL, add, view, search, update, deleted, sortById, undo, redo, procDelQueue, srchBackup };
+    MenuFunction menu[] = { NULL, add_fn, view_fn, search_fn, update_fn, deleted_fn, sortById_fn, undo_fn, redo_fn, processDeletionQueue_fn, searchBackups_fn };
 
     int choice;
     while (1) {
-        showMenu_fn();
+        if (showMenu_fn) showMenu_fn();
         if (scanf("%d", &choice) != 1) break;
 
+
         if (choice == 11) {
-            freem_fn();
+            if (freem_fn) freem_fn();
             break;
         }
 
@@ -57,3 +67,4 @@ int main(void) {
     dlclose(handle);
     return 0;
 }
+

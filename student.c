@@ -1,3 +1,4 @@
+#define _DEFAULT_SOURCE
 #include "student.h"
 #include <fcntl.h>    
 #include <unistd.h>  
@@ -213,7 +214,7 @@ void view(void) {
     printf("\n%-10s %-30s %-10s\n", "ID", "Name", "Score");
     Node* curr = studentList;
     while (curr != NULL) {
-        printf("%%-10d %-30s %-10.2f\n", curr->data.id, curr->data.name, curr->data.score);
+        printf("%-10d %-30s %-10.2f\n", curr->data.id, curr->data.name, curr->data.score);
         curr = curr->next;
     }
 }
