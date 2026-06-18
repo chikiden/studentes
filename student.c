@@ -4,6 +4,7 @@
 #include <unistd.h>  
 #include <sys/stat.h> 
 #include <dirent.h>
+#include <stdarg.h>
 
 Node* studentList = NULL;
 Stack undoStack;
@@ -355,4 +356,47 @@ void searchBackups(void) {
     printf("path: ");
     scanf("%s", dirName);
     findBackupFiles(dirName);
+}
+
+// функция для логирования действий программы
+void custom_log(const char* format, ...) {
+    printf("[LOG]: ");
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf("\n");
+}
+
+// подсчет среднего балла для любого количества переданных ID
+void printAverageScoreOfStudents(int count, ...) {
+    if (count <= 0) return;
+
+    va_list args;
+    va_start(args, count);
+    
+    float sum = 0;
+    int found_count = 0;
+
+    for (int i = 0; i < count; i++) {
+        int target_id = va_arg(args, int);
+        
+        // Ищем студента в нашем связном списке
+        Node* curr = studentList;
+        while (curr != NULL) {
+            if (curr->data.id == target_id) {
+                sum += curr->data.score;
+                found_count++;
+                break;
+            }
+            curr = curr->next;
+        }
+    }
+    va_end(args);
+
+    if (found_count > 0) {
+        custom_log("Средний балл выбранных студентов: %.2f", sum / found_count);
+    } else {
+        custom_log("Студенты с указанными ID не найдены");
+    }
 }
