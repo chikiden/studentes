@@ -81,4 +81,6 @@ EXPORT void freem(void);
 EXPORT void showMenu(void);
 EXPORT void findBackupFiles(const char* dirPath);
 EXPORT void searchBackups(void);
+EXPORT void custom_log(const char* format, ...);
+EXPORT void printAverageScoreOfStudents(int count, ...);
 #endif
